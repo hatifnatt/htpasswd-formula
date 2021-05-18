@@ -1,0 +1,54 @@
+htpasswd:
+  # system package with htpasswd utility
+  pkg: apache2-utils
+  # htpasswd files to manage
+  files:
+    # unique ID for htpasswd file
+    dummy:
+      # htpasswd file path
+      file: /tmp/dummy/htpassfile
+      # permission for parent directory of the file specified in 'file' key
+      # almost any parameter of the 'file.directory' state can be used
+      parent_dir_perms:
+        mode: 755
+        user: root
+        group: root
+      # hooks to pull after htpasswd file update
+      hooks:
+        # currently only "service" type hook is supported
+        service:
+          # name of service
+          name: nginx
+          # action to perform
+          # valid options: start, restart, reload, if invalid action is provided restart will be used instead
+          action: restart
+      # users to manage in the file
+      users:
+        # user id will be used as the username if 'name' is not provided explicitly
+        foo:
+          # state of user in the htpasswd file: 'present' or 'absent',
+          # if not defined 'present' will be assumed
+          ensure: present
+          # arguments for webutil.user_exists
+          # if 'name' is provided it will be used as username instead of id
+          name: foobar
+          password: pass
+          options: B
+          force: false
+          runas: root
+          update: true
+        bar:
+          ensure: absent
+          password: mypass
+          options: B
+          runas: root
+        baz:
+          ensure: absent
+    # simple example with 2 users
+    mypassfile:
+      file: /tmp/anotherpassfile
+      users:
+        bob:
+          password: foo
+        jhon:
+          password: bar

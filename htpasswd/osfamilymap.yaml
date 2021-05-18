@@ -1,0 +1,6 @@
+---
+Debian:
+  pkg: apache2-utils
+
+RedHat:
+  pkg: httpd-tools

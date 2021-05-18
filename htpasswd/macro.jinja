@@ -1,0 +1,9 @@
+{%- macro format_kwargs(kwarg) -%}
+  {%- if kwarg and kwarg is mapping %}
+  {%- filter indent(4) %}
+    {%- for k, v in kwarg|dictsort() %}
+- {{ k }}: {{ v|tojson }}
+    {%- endfor %}
+  {%- endfilter %}
+  {%- endif %}
+{%- endmacro %}
